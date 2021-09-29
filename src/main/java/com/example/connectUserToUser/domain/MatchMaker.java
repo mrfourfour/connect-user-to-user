@@ -16,9 +16,19 @@ public class MatchMaker {
 
     private static PriorityQueue<String> users;
 
-    public void applyMatchMakerList(User user) {
-        users.add(user.getUserId());
-        matchUser();
+    private boolean vaildUser(User user) {
+        return users.contains(user);
+    }
+
+    public User applyMatchMakerList(User user) {
+        if (vaildUser(user)) {
+            throw new IllegalArgumentException("이미 대기열에 있습니다.");
+        } else {
+            users.add(user.getUserId());
+            matchUser();
+            return user;
+        }
+
     }
 
     private void matchUser() {

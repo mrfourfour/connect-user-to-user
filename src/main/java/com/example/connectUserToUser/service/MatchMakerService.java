@@ -8,17 +8,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import javax.xml.bind.ValidationException;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MatchMakerService {
 
     private final MatchMaker matchMaker;
     private static final Logger logger = LoggerFactory.getLogger(MatchMakerService.class);
 
-    public void operateMatchMaker(User user)
-    {
+    public User operateMatchMaker(User user) throws IllegalArgumentException {
         logger.info("풀에 유저 추가");
-        matchMaker.applyMatchMakerList(user);
-
+        return matchMaker.applyMatchMakerList(user);
     }
 }

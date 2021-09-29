@@ -5,10 +5,12 @@ import com.example.connectUserToUser.service.MatchMakerService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.http.HttpResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,10 +20,11 @@ public class MatchMakerController {
 
 
     @GetMapping("/api/apply_match")
-    public void apply_match(@RequestBody String userId){
-        logger.info("매치 신청");
-        User user = new User((userId));
+    public ResponseEntity<User> apply_match(@RequestParam String userId) throws Exception {
+
+        User user = new User(userId);
         matchMakerService.operateMatchMaker(user);
+        return ResponseEntity.ok(user);
     }
 
 }
