@@ -5,16 +5,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.PriorityQueue;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
-@RequiredArgsConstructor
-@Component
+
 public class MatchMaker {
     private static final Logger logger = LoggerFactory.getLogger(MatchMaker.class);
 
     private static PriorityQueue<String> users;
+    private Random random = new Random();
 
     private boolean vaildUser(User user) {
         return users.contains(user);
@@ -45,6 +43,8 @@ public class MatchMaker {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
+
+                Collections.shuffle(Collections.singletonList(users));
                 if (users.size() % 2 == 0) {
                     logger.info("2명 매치 성공");
                     users.remove(users.peek());

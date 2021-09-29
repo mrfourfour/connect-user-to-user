@@ -28,11 +28,9 @@ class MatchMakerTest {
 
     @Test
     void applyMatchMakerList() {
-        matchMaker.applyMatchMakerList(user);
-        matchMaker.applyMatchMakerList(user);
-        Assertions.assertThatThrownBy(() -> {
-            throw new IllegalArgumentException();
-        }).isInstanceOf(IllegalArgumentException.class).hasMessage("이미 대기열에 있습니다.");
+
+
+        System.out.println(usersList);
 
     }
 }
