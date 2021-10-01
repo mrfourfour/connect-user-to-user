@@ -17,11 +17,11 @@ public class MatchMakerService {
     private final MatchMaker matchMaker;
     private static final Logger logger = LoggerFactory.getLogger(MatchMakerService.class);
 
-    public void operateMatchMaker(User user) throws Exception
+    public User operateMatchMaker(User user) throws Exception
     {
         logger.info("풀에 유저 추가");
         matchMaker.applyMatchMakerList(user);
-
+        return user;
     }
 }
 // 서비스 단에서는 뭘해야할깡?

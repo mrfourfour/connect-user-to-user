@@ -20,7 +20,7 @@ public class MatchMakerController {
         logger.info("매치 신청");
         String username = user.getUserId();
         try {
-            matchMakerService.operateMatchMaker(user);
+            User user1 =  matchMakerService.operateMatchMaker(user);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
