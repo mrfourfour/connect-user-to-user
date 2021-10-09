@@ -18,9 +18,8 @@ public class MatchMakerController {
     private static final Logger logger = LoggerFactory.getLogger(MatchMakerController.class);
     private final MatchMakerService matchMakerService;
 
-
-    @GetMapping("/api/apply_match")
-    public ResponseEntity<User> apply_match(@RequestParam String userId) throws Exception {
+    @PostMapping("/api/apply_match")
+    public ResponseEntity<User> apply_match(@RequestParam String userId) {
 
         User user = new User(userId);
         matchMakerService.operateMatchMaker(user);
