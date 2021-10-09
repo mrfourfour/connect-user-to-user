@@ -19,10 +19,12 @@ public class MatchMaker {
         this.random = new Random();
     }
 
+    // 현재 유저가 풀에 있는지 검증
     private boolean vaildUser(User user) {
         return users.contains(user);
     }
 
+    // 리스트에 추가하는 로직
     public User applyMatchMakerList(User user) {
         if (vaildUser(user)) {
             throw new IllegalArgumentException("이미 대기열에 있습니다.");
@@ -30,13 +32,12 @@ public class MatchMaker {
             users.add(user);
             return user;
         }
-
     }
 
     public MatchUserPair matchUser() {
         if (users.size() <= 1) {
             logger.info("대기인원이 1명 이하...");
-            throw new IllegalStateException("...");
+            throw new IllegalArgumentException("대기 인원이 없습니다.");
         }
         return startMatch();
     }
@@ -48,29 +49,14 @@ public class MatchMaker {
         return new MatchUserPair(left, right, roomId);
     }
 
-//    private void startMatch() {
-//        Timer timer = new Timer();
-//        TimerTask timerTask = new TimerTask() {
-//            @Override
-//            public void run() {
-//
-//                Collections.shuffle(Collections.singletonList(users));
-//                if (users.size() % 2 == 0) {
-//                    logger.info("2명 매치 성공");
-//                    users.remove(users.peek());
-//                    users.remove(users.peek());
-//                    timer.cancel();
-//                }
-//
-//            }
-//        };
-//        timer.schedule(timerTask, 0, 1000);
-//
-//    }
+
 }
 
 
-
+//매치메이커는 말그대로 두 유저를 임의로 선택하는 것에 집중해야 합니다.
+//
+//선택하고 뽑아내는 것은 매치메이커의 책임일까요? => 제일 궁금한것 뭘 어떻게 해야할까?
+//도메인 레이어는 바깥 레이어의 어떤 의존성도 주입하지 않아야 합니다.
 
 /*
  * 유저 id를 컨트롤러에서 받고
@@ -78,3 +64,4 @@ public class MatchMaker {
  * 도메인의 유저 풀에서 유저어 id를 넣고
  * 2명 딱되면 쥬풀에서 해당 유저 id를 지워준다.
  * */
+
