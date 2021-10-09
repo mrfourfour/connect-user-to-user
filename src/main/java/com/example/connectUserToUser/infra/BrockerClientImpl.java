@@ -2,21 +2,20 @@ package com.example.connectUserToUser.infra;
 
 import com.example.connectUserToUser.domain.MatchUserPair;
 import com.example.connectUserToUser.service.BrokerClient;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
+@RequiredArgsConstructor
 public class BrockerClientImpl implements BrokerClient {
-    private WebClient webClient = WebClient.builder()
-            .baseUrl("http://localhost:8080")
-            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .build();
+    private final WebClient baseClient;
 
     @Override
     public void send(MatchUserPair pair) {
-        webClient.post()
+        baseClient.post()
                 .uri("/api/getMatchUser") //받을 주소
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(pair) //바디값 지정
