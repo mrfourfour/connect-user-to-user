@@ -16,8 +16,9 @@ public class BrockerClientImpl implements BrokerClient {
     @Override
     public void send(MatchUserPair pair) {
         baseClient.post()
-                .uri("/api/getMatchUser") //받을 주소
+                .uri("/match/result") //받을 주소
                 .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(pair) //바디값 지정
                 .retrieve()// 문자열
                 .bodyToMono(MatchUserPair.class);//클래스에 있는 값 사용

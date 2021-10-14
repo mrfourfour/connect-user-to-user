@@ -12,7 +12,7 @@ public class WebclientConfig {
     @Bean
     public WebClient baseClient(){
         return WebClient.builder()
-                .baseUrl("http://localhost:8080")
+                .baseUrl("http://wonbeom.iptime.org:3000")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }

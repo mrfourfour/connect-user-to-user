@@ -1,9 +1,9 @@
 package com.example.connectUserToUser.domain;
 
-import lombok.RequiredArgsConstructor;
+import com.example.connectUserToUser.service.QupidRotator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -13,6 +13,7 @@ public class MatchMaker {
     // 쓰레드 세이프하지않서 우선순위큐를 사용하지 않음
     private Queue<User> users;
     private Random random;
+
 
     public MatchMaker() {
         this.users = new PriorityBlockingQueue<>();
@@ -27,7 +28,7 @@ public class MatchMaker {
     // 리스트에 추가하는 로직
     public User applyMatchMakerList(User user) {
         if (vaildUser(user)) {
-            throw new IllegalArgumentException("이미 대기열에 있습니다.");
+            throw new IllegalArgumentException("Exits User.");
         } else {
             users.add(user);
             return user;
@@ -36,11 +37,13 @@ public class MatchMaker {
 
     public MatchUserPair matchUser() {
         if (users.size() <= 1) {
-            logger.info("대기인원이 1명 이하...");
-            throw new IllegalArgumentException("대기 인원이 없습니다.");
+            logger.info("waiting 1 user or less");
+            throw new IllegalArgumentException();
         }
+
         return startMatch();
     }
+
 
     private MatchUserPair startMatch() {
         User left = users.poll();
