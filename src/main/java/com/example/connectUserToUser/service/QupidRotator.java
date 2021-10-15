@@ -28,9 +28,11 @@ public class QupidRotator {
             pair = matchMaker.matchUser();
         } catch (Exception e) {
             log.error("error occurred while pair", e);
+            return;
         }
 
         brokerClient.send(pair);
+        log.info("successfully send to broker");
     }
 
 //    private final ThreadPoolTaskScheduler scheduler;
