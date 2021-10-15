@@ -27,7 +27,6 @@ public class QupidRotator {
         try {
             pair = matchMaker.matchUser();
         } catch (Exception e) {
-            log.error("error occurred while pair", e);
             return;
         }
 
