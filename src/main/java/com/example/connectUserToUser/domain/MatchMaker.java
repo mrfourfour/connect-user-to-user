@@ -1,26 +1,23 @@
 package com.example.connectUserToUser.domain;
 
-import lombok.RequiredArgsConstructor;
+import com.example.connectUserToUser.service.QupidRotator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.PriorityQueue;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
+import java.util.concurrent.PriorityBlockingQueue;
 
 public class MatchMaker {
     private static final Logger logger = LoggerFactory.getLogger(MatchMaker.class);
-    private static final PriorityQueue<String> users = new PriorityQueue<>();
+    // 쓰레드 세이프하지않서 우선순위큐를 사용하지 않음
+    private Queue<User> users;
+    private Random random;
 
-    // 리스트에 추가하는 로직
-    public void applyMatchMakerList(User user) {
-        if (!vaildUser(user)) {
-            users.add(user.getUserId());
-            matchUser();
-        } else {
-            throw new IllegalArgumentException();
-        }
+
+    public MatchMaker() {
+        this.users = new PriorityBlockingQueue<>();
+        this.random = new Random();
     }
 
     // 현재 유저가 풀에 있는지 검증
@@ -28,32 +25,33 @@ public class MatchMaker {
         return users.contains(user);
     }
 
-    // 매칭 유저
-    private void matchUser() {
-        if(checkPollSize()){
+    // 리스트에 추가하는 로직
+    public User applyMatchMakerList(User user) {
+        if (vaildUser(user)) {
+            throw new IllegalArgumentException("Exits User.");
+        } else {
+            users.add(user);
+            return user;
+        }
+    }
+
+    public MatchUserPair matchUser() {
+        if (users.size() <= 1) {
+            logger.info("waiting 1 user or less");
             throw new IllegalArgumentException();
         }
-        else{
-            startMatch();
-        }
+
+        return startMatch();
     }
 
-    // 매칭 시작 2명 일단 뽑아 -> 어떻게 임의로 뽑아?
-    private void startMatch() {
-        String user1 = users.peek();
-        String user2 = users.peek();
 
+    private MatchUserPair startMatch() {
+        User left = users.poll();
+        User right = users.poll();
+        String roomId = UUID.randomUUID().toString();
+        return new MatchUserPair(left, right, roomId);
     }
-    // 풀 사이즈 검증
-    private boolean checkPollSize() {
-        if (users.size() <= 1) {
-            logger.info("대기인원이 1명 이하...");
-            return true;
-        } else {
-            return false;
-        }
 
-    }
 
 }
 
